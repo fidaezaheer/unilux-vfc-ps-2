@@ -5,10 +5,10 @@ import json
 import base64
 import requests
 from ast import literal_eval
+from datetime import datetime
 
 class RhpApi(http.Controller):
-    def get_as_base64(self, url):
-        return base64.b64encode(requests.get(url).content)
+
 
     @http.route('/api/StartAppointment', type='json', auth="public", website=True)
     def start_appointment(self, **post):
@@ -72,7 +72,7 @@ class RhpApi(http.Controller):
                 manufacturer_array.append(temp)
             result['manufacturer'] = manufacturer_array
         return result
-    
+
     @http.route('/api/UploadImage', type='json', auth="public", website=True)
     def upload_image(self, **post):
         post_data = json.loads(request.httprequest.data)
@@ -95,7 +95,7 @@ class RhpApi(http.Controller):
                         'res_model': 'crm.lead',
                         'res_id': lead_obj.id,
                         'type': 'binary',
-                        'datas': get_as_base64(imgUrl)
+                        'datas': base64.b64encode(requests.get(imgUrl).content)
                      })
                 if ir_attachment:
                     result['status'] = True
@@ -114,6 +114,7 @@ class RhpApi(http.Controller):
                     product_array.append(temp)
                 result['products'] = product_array
         return result
+    
 
     @http.route('/api/UpdateProduct', type='json', auth="public", website=True)
     def upload_product(self, **post):
@@ -161,6 +162,9 @@ class RhpApi(http.Controller):
 
         lead = post_data.get('lead')
         appointment = post_data.get('appointment')
+        datetime_object = datetime.strptime(appointment.get('DateTime'), '%a %b %d, %Y, %I:%M:%S %p')
+
+        print(datetime_object)
 
         if lead:
             #update res.partner
@@ -176,6 +180,7 @@ class RhpApi(http.Controller):
                 'country_id': country_obj.id,
                 'email': lead.get('Email')
             }) 
+            result['res.partner'] = res_partner_obj.id
             #update crm.lead?
             lead_obj = request.env['crm.lead'].sudo().search([('id', '=', lead.get('leadId'))])
             lead_obj.write({
@@ -186,8 +191,23 @@ class RhpApi(http.Controller):
                 'city': lead.get('City'),
                 'zip': lead.get('Zip'),
                 'country_id': country_obj.id,
-            }) 
-
-            result['status'] = True
+            })
+            result['leadId'] = lead_obj.id
+            if appointment:
+                calendar_appointment = request.env['calendar.event'].sudo().create({
+                        'name': appointment.get('Name'),
+                        'start': datetime.strptime(appointment.get('DateTime'), '%a %b %d, %Y, %I:%M:%S %p'),
+                        'stop': datetime.strptime(appointment.get('DateTime'), '%a %b %d, %Y, %I:%M:%S %p'),
+                        'partner_ids': [(6, 0, [res_partner_obj.id])],
+                        'res_model': 'crm.lead',
+                        'res_model_id': request.env['ir.model'].sudo().search([('model', '=', 'crm.lead')], limit=1).id,
+                        'res_id': lead_obj.id,
+                        'opportunity_id': lead_obj.id,
+                        'active': True,
+                    })
+                if calendar_appointment:
+                    result['calendar.appointment'] = calendar_appointment.id
+                    result['status'] = True
+                    return result
         result['status'] = False
         return result
