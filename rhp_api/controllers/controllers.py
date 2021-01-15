@@ -1,36 +1,11 @@
 # -*- coding: utf-8 -*-
 from odoo import http
-from odoo.http import request, Response, JsonRequest
+from odoo.http import request
 import json
-from odoo.tools import date_utils
 import base64
 import requests
 from ast import literal_eval
 from datetime import datetime
-
-class JsonRequestNew(JsonRequest):
-    def _json_response(self, result=None, error=None):
-        responseData = super(JsonRequestNew, self)._json_response(result=result,error=error)
-        response = {}
-        if error is not None:
-            response = error
-        if result is not None:
-            response = result
-        mime = 'application/json'
-        body = json.dumps(response, default=date_utils.json_default)
-        return Response(
-            body, status=error and error.pop('http_status', 200) or 200,
-            headers=[('Content-Type', mime), ('Content-Length', len(body))]
-        )
-
-class RootNew(http.Root):
-    def get_request(self, httprequest):
-        jsonResponse = super(RootNew, self).get_request(httprequest=httprequest)
-        if httprequest.mimetype in ("application/json", "application/json-rpc"):
-            return JsonRequestNew(httprequest)
-        else:
-            return jsonResponse
-http.root = RootNew()
 
 class RhpApi(http.Controller):
 
