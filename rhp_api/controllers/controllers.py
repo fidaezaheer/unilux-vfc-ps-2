@@ -104,13 +104,15 @@ class RhpApi(http.Controller):
                 #Get list product
                 product_obj = request.env['product.product'].sudo().search([])
                 product_array = []
+                path_info = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url')
+
                 for a in product_obj:
                     temp = {}
                     temp['Id'] = a.id
                     temp['Name'] = a.name
                     temp['Description'] = a.description_sale
                     temp['Price'] = a.lst_price
-                    temp['Image'] = imgUrl
+                    temp['Image'] = str(path_info)+'/web/image?model=product.product&field=image_128&id='+str(a.id)+'&unique=1'
                     product_array.append(temp)
                 result['products'] = product_array
         return result

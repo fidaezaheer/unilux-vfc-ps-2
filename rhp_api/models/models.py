@@ -19,7 +19,6 @@ class LeadInherit(models.Model):
     image_count = fields.Integer('# Image', compute='_compute_image_count')
 
     def _compute_image_count(self):
-        print("*****_compute_image_count")
         attachment_data = self.env['ir.attachment'].sudo().search([('res_model', '=', 'crm.lead'), ('res_id', '=', self.id), ])
         self.image_count = len(attachment_data)
     
