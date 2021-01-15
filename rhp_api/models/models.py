@@ -20,7 +20,14 @@ class LeadInherit(models.Model):
 
     def _compute_image_count(self):
         print("*****_compute_image_count")
-        attachment_data = self.env['ir.attachment'].sudo().search([('res_model', '=', self.id)])
+        attachment_data = self.env['ir.attachment'].sudo().search([('res_model', '=', 'crm.lead'), ('res_id', '=', self.id), ])
         self.image_count = len(attachment_data)
+    
     def action_attachment(self):
-        return
+        action = self.env["ir.actions.actions"]._for_xml_id("base.action_attachment")
+        action['context'] = {
+            'default_res_model': self._name,
+            'default_res_id': self.ids[0]
+        }
+        action['domain'] = ['&', ('res_model', '=', 'crm.lead'), ('res_id', 'in', self.ids)]
+        return action
