@@ -144,6 +144,7 @@ class RhpApi(http.Controller):
         if leadId and manufacturer and product:
             #search LEAD
             lead_obj = request.env['crm.lead'].sudo().search([('id', '=', leadId)])
+            company_obj = request.env['res.company'].sudo().search([('name', '=', 'Unilux RHP')])
             if lead_obj:
                 #create quotation with those Products
                 quotation = request.env['sale.order'].sudo().create({
@@ -154,7 +155,7 @@ class RhpApi(http.Controller):
                         'medium_id': lead_obj.medium_id.id,
                         'origin': lead_obj.name,
                         'source_id': lead_obj.source_id.id,
-                        'company_id': lead_obj.company_id.id or self.env.company.id,
+                        'company_id': company_obj.id if company_obj else 1,
                         'tag_ids': [(6, 0, lead_obj.tag_ids.ids)],
                         'state': 'draft'
                      })
