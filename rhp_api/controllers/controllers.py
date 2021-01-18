@@ -25,6 +25,7 @@ class RhpApi(http.Controller):
         if customer_name and (street or street2) and zip and city and country:
             #search
             country_obj = request.env['res.country'].search([('name', '=', country)])
+            
             res_partner_obj = request.env['res.partner'].sudo().search([
                 ('name', '=', customer_name), 
                 ('street', '=', street), 
@@ -51,19 +52,31 @@ class RhpApi(http.Controller):
                 if new_res_partner:
                     result['res.partner'] = new_res_partner.id
             #Create lead
+            company_obj = request.env['res.company'].sudo().search([('name', '=', 'Unilux RHP')])
             new_crm_lead = request.env['crm.lead'].sudo().create({
                         'name': customer_name+"'s opportunity",
                         'type': 'opportunity',
                         'partner_id': result['res.partner'],
                         'active': True,
+                        'company_id': company_obj.id if company_obj else 1
                      })
             if new_crm_lead:
                 result['leadId'] = new_crm_lead.id
 
             #Get list manufacturer
+            manufacturer_category_obj = request.env['res.partner.category'].sudo().search([('name', '=ilike', 'manufacturer')])
+            
+            
+            print("manufacturer_category_obj")
+            print(manufacturer_category_obj)
             manufacturer_obj = request.env['res.partner'].sudo().search([
                 ('is_company', '=', True),
+                ('category_id', 'in', [manufacturer_category_obj.id]),
             ])
+            print("manufacturer_obj")
+            print(manufacturer_obj)
+
+
             manufacturer_array = []
             for a in manufacturer_obj:
                 temp = {}
