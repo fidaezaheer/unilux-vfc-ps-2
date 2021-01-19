@@ -215,11 +215,14 @@ class RhpApi(http.Controller):
                         'start': datetime.strptime(appointment.get('DateTime'), '%a %b %d, %Y, %I:%M:%S %p'),
                         'stop': datetime.strptime(appointment.get('DateTime'), '%a %b %d, %Y, %I:%M:%S %p'),
                         'partner_ids': [(6, 0, [res_partner_obj.id])],
-                        'res_model': 'crm.lead',
-                        'res_model_id': request.env['ir.model'].sudo().search([('model', '=', 'crm.lead')], limit=1).id,
-                        'res_id': lead_obj.id,
+                        'res_model': 'calendar.appointment.type',
+                        'res_model_id': request.env['ir.model'].sudo().search([('model', '=', 'calendar.appointment.type')], limit=1).id,
+                        
+                        'res_id': request.env['calendar.appointment.type'].sudo().search([], limit=1).id,
+                        'appointment_type_id': request.env['calendar.appointment.type'].sudo().search([], limit=1).id,
                         'opportunity_id': lead_obj.id,
                         'active': True,
+                        
                     })
                 if calendar_appointment:
                     result['calendar.appointment'] = calendar_appointment.id
