@@ -178,9 +178,6 @@ class RhpApi(http.Controller):
 
         lead = post_data.get('lead')
         appointment = post_data.get('appointment')
-        datetime_object = datetime.strptime(appointment.get('DateTime'), '%a %b %d, %Y, %I:%M:%S %p')
-
-        print(datetime_object)
 
         if lead:
             #update res.partner
@@ -212,8 +209,8 @@ class RhpApi(http.Controller):
             if appointment:
                 calendar_appointment = request.env['calendar.event'].sudo().create({
                         'name': appointment.get('Name'),
-                        'start': datetime.strptime(appointment.get('DateTime'), '%a %b %d, %Y, %I:%M:%S %p'),
-                        'stop': datetime.strptime(appointment.get('DateTime'), '%a %b %d, %Y, %I:%M:%S %p'),
+                        'start': appointment.get('DateTime'),
+                        'stop': appointment.get('DateTime'),
                         'partner_ids': [(6, 0, [res_partner_obj.id])],
                         'res_model': 'calendar.appointment.type',
                         'res_model_id': request.env['ir.model'].sudo().search([('model', '=', 'calendar.appointment.type')], limit=1).id,
@@ -230,3 +227,8 @@ class RhpApi(http.Controller):
                     return result
         result['status'] = False
         return result
+
+# class AppointmentIframe(http.Controller):
+#      @http.route('/onlineappoinement', type='http', auth='public', website=True)
+#      def show_custom_webpage(self, **kw):
+#           return http.request.render('rhp_api.appointment_iframe', {})

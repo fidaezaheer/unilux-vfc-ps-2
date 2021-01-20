@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "rhp_api",
+    'name': "Unilux RHP APIs",
 
     'summary': "",
 
@@ -16,12 +16,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'crm'],
+    'depends': ['base', 'crm', 'website_calendar', 'sale'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
+        'views/calendar_template.xml',
     ],
     
 }   
