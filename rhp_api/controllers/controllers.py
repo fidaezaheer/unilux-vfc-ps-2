@@ -229,6 +229,39 @@ class RhpApi(http.Controller):
         result['status'] = False
         return result
 
+    @http.route('/api/UpdateCustomer', type='json', auth="public", website=True)
+    def upload_customer(self, **post):
+        post_data = json.loads(request.httprequest.data)
+        result = {}
+        res_partner_obj = request.env['res.partner'].sudo().search([('id', '=', post_data.get('res.partner'))])
+        street = post_data.get('Street')
+        street2 = post_data.get('Street2')
+        zip = post_data.get('Zip')
+        city = post_data.get('City')
+        country = post_data.get('Country')
+        phone = post_data.get('Phone')
+        email = post_data.get('Email')
+        additional_detail = post_data.get('AdditionalDetail')
+
+        if res_partner_obj:
+            #update res.partner
+            country_obj = request.env['res.country'].search([('name', '=', country)])
+            res_partner_obj.write({
+                'street': street,
+                'street2': street2,
+                'city': city,
+                'zip': zip,
+                'country_id': country_obj.id,
+                'phone': phone,
+                'email': email,
+                'comment': additional_detail,
+            }) 
+            result['res.partner'] = res_partner_obj.id
+            result['status'] = True
+            return result
+        result['status'] = False
+        return result
+
 # class AppointmentIframe(http.Controller):
 #      @http.route('/onlineappoinement', type='http', auth='public', website=True)
 #      def show_custom_webpage(self, **kw):
