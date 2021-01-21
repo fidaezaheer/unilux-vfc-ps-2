@@ -108,14 +108,15 @@ class RhpApi(http.Controller):
                         'res_model': 'crm.lead',
                         'res_id': lead_obj.id,
                         'type': 'binary',
-                        'datas': base64.b64encode(requests.get(imgUrl).content)
+                        'datas': base64.b64encode(requests.get(imgUrl).content) 
                      })
                 if ir_attachment:
                     result['status'] = True
                 else:
                     result['status'] = False
                 #Get list product
-                product_obj = request.env['product.product'].sudo().search([])
+                company_obj = request.env['res.company'].sudo().search([('name', '=', 'Unilux RHP')])
+                product_obj = request.env['product.product'].sudo().search([('company_id', '=', company_obj.id)])
                 product_array = []
                 path_info = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url')
 
