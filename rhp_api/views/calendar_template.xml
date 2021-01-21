@@ -26,7 +26,7 @@
                                         </div>
                                         <div class="dropdown-menu" role="menu">
                                             <t t-foreach="day['slots']" t-as="slot">
-                                                <a t-if='slot' role="menuitem" class="dropdown-item"  t-attf-onclick="(function(){ document.getElementById('result').textContent ='#{slot['datetime']}'})();return false;" t-esc="slot['hours']"/>
+                                                <a t-if='slot' role="menuitem" class="dropdown-item"  t-attf-onclick="(function(){ parent.postMessage('#{slot['datetime']}', '*'); })();return false;" t-esc="slot['hours']"/>
                                             </t>
                                         </div>
                                     </t>
