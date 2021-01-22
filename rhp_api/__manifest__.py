@@ -22,7 +22,7 @@
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
-        'views/calendar_template.xml',
+        'views/email_appointment_template.xml',
     ],
     
 }   

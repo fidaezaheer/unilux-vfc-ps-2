@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_template_appointment_create" model="mail.template">
+            <field name="name">Online Appointment: Creating</field>
+            <field name="model_id" ref="calendar.model_calendar_event"/>
+            <field name="subject">RHP Appointment: Your Appointment Is Confirmed</field>
+            <field name="email_from"></field>
+            <field name="email_to"></field>
+            <field name="body_html" type="html">
+<table
+    class="full"
+    border="0"
+    bgcolor="#FFF"
+    cellpadding="0"
+    cellspacing="0"
+    align="center"
+    style="font-family: Arial;line-height:1;width:600px;min-width:600px;max-width:600px;"
+  >
+    <tr>
+      <td width="100%" style="min-width: 100%;width:100%;max-width: 100%;">
+        <table width="100%" style="min-width: 100%;width:100%;max-width: 100%;text-align: center;" cellpadding="0"
+          cellspacing="0">
+          <tr height="15">
+            <td colspan="3" style="min-width: 100%;width:100%;max-width: 100%;"></td>
+          </tr>
+          <tr>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;">
+              <a href="https://www.uniluxrhp.com/" target="_blank">
+                <img src="https://unilux-vfc-rhp-1894585.dev.odoo.com/web/image/945" alt="Logo" />
+              </a>
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;">
+              <h1 style="font-size: 28px;line-height: 25px;color:#000;font-family: Arial;font-weight: 700;">Your
+                Appointment Is Confirmed</h1>
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;">
+              <img src="https://unilux-vfc-rhp-1894585.dev.odoo.com/web/image/946" alt="Sepearator" />
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;">
+              <p style="font-size: 18px;line-height: 20px;color:#000;font-family: Arial;">Thank you for booking your
+                heat pump replacement with Unilux RHP. Your appointment is confirmed for:</p>
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;">
+              <p style="font-size: 18px;line-height: 15px;color:#000;font-family: Arial;font-weight: 700;">${ctx.get('date')} at
+                ${ctx.get('time')}.<br />
+                <br />
+                ${ctx.get('address')}
+              </p>
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;">
+              <table class="full" width="100%" style="min-width: 100%;width:100%;max-width: 100%;text-align: center;"
+                cellpadding="0" cellspacing="0">
+                <tr valign="bottom" class="full">
+                  <td style="min-width: 30%;width:30%;max-width: 30%;" class="full"><img src="https://unilux-vfc-rhp-1894585.dev.odoo.com/web/image/950" alt="Calendar" /></td>
+                  <td style="min-width: 5%;width:5%;max-width: 5%;" class="full"></td>
+                  <td style="min-width: 30%;width:30%;max-width: 30%;" class="full">
+                    <table width="100%" style="min-width: 100%;width:100%;max-width: 100%;text-align: center;"
+                      cellpadding="0" cellspacing="0">
+                      <tr valign="bottom" class="full">
+                        <td class="full"
+                          style="min-width: 100%;width:100%;max-width: 100%;background:#009B74;border-radius:5px;height:40px;line-height: 40px;font-weight: 700;text-align:center;">
+                          <a href="javascript:void(0);"
+                            style="display:inline-block;font-family:Arial;font-size:14px;font-weight:700;color:#000;background:#009B74;min-width:130px;max-width:130px;width:130px;height:40px;line-height: 38px;text-align: center;text-decoration: none;margin: 0;padding: 0;">
+                            Add to Calendar
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td style="min-width: 5%;width:5%;max-width: 5%;" class="full"></td>
+                  <td style="min-width: 30%;width:30%;max-width: 30%;" class="full"><img src="https://unilux-vfc-rhp-1894585.dev.odoo.com/web/image/951" alt="Envelope" /></td>
+                </tr>
+              </table>
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr height="25">
+            <td colspan="3" style="min-width: 100%;width:100%;max-width: 100%;"></td>
+          </tr>
+          <tr>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;">
+              <img src="https://unilux-vfc-rhp-1894585.dev.odoo.com/web/image/946" alt="Separator" />
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr height="1">
+            <td colspan="3" style="min-width: 100%;width:100%;max-width: 100%;"></td>
+          </tr>
+          <tr>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;">
+              <p style="font-size: 18px;line-height: 20px;color:#000;font-family: Arial;text-align: left;">Our
+                technician will contact you when they arrive at your building. They’ll be courteous and quick in your
+                suite for minimal impact. Your technician is bringing the following equipment to your suite:<br />
+              </p>
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr height="10">
+            <td colspan="3" style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;text-align: left;">
+              <h2 style="font-size: 18px;line-height: 25px;color:#000;font-family: Arial;font-weight: 700;">Your Quote:
+              </h2>
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;text-align: left;">
+              <table width="100%"
+                style="min-width: 100%;width:100%;max-width: 100%;text-align: center;border:1px solid #999;"
+                cellpadding="0" cellspacing="0">
+                <tr valign="middle" height="10">
+                  <td colspan="5" style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                </tr>
+                <tr valign="middle">
+                  <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                  <td style="min-width: 40%;width:40%;max-width: 40%;text-align: left;">
+                    <h2 style="font-size: 13px;line-height: 15px;color:#000;font-family: Arial;font-weight: 700;">
+                      Chassis</h2>
+                    <h2 style="font-size: 10px;line-height: 10px;color:#000;font-family: Arial;font-weight: 700;">
+                      Manufacturer</h2>
+                  </td>
+                  <td style="min-width: 25%;width:25%;max-width: 25%;text-align: right;">
+                    <h2 style="font-size: 10px;line-height: 10px;color:#000;font-family: Arial;font-weight: 700;">
+                      Quantity auto-filled from previous</h2>
+                    <img src="https://unilux-vfc-rhp-1894585.dev.odoo.com/web/image/952" alt="Separator" style="vertical-align: 11px;" />
+                  </td>
+                  <td style="min-width: 25%;width:25%;max-width: 25%;text-align: right;">
+                    <h2 style="font-size: 13px;line-height: 15px;color:#000;font-family: Arial;font-weight: 700;">$
+                      xxx.xx</h2>
+                  </td>
+                  <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                </tr>
+                <tr valign="middle" height="10">
+                  <td colspan="5" style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                </tr>
+              </table>
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr height="10">
+            <td colspan="3" style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr style="opacity: 0.3;">
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;text-align: left;">
+              <table width="100%"
+                style="min-width: 100%;width:100%;max-width: 100%;text-align: center;border:1px solid #999;"
+                cellpadding="0" cellspacing="0">
+                <tr valign="middle" height="10">
+                  <td colspan="5" style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                </tr>
+                <tr valign="middle">
+                  <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                  <td style="min-width: 40%;width:40%;max-width: 40%;text-align: left;">
+                    <h2 style="font-size: 13px;line-height: 15px;color:#000;font-family: Arial;font-weight: 700;">
+                      Accessory Name</h2>
+                    <h2 style="font-size: 10px;line-height: 10px;color:#000;font-family: Arial;font-weight: 700;">
+                      Description</h2>
+                  </td>
+                  <td style="min-width: 25%;width:25%;max-width: 25%;text-align: right;"></td>
+                  <td style="min-width: 25%;width:25%;max-width: 25%;text-align: right;">
+                    <h2 style="font-size: 13px;line-height: 15px;color:#000;font-family: Arial;font-weight: 700;">$
+                      xxx.xx</h2>
+                  </td>
+                  <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                </tr>
+                <tr valign="middle" height="10">
+                  <td colspan="5" style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                </tr>
+              </table>
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr height="10">
+            <td colspan="3" style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;text-align: left;">
+              <table width="100%"
+                style="min-width: 100%;width:100%;max-width: 100%;text-align: center;background: #EEE;" cellpadding="0"
+                cellspacing="0">
+                <tr valign="middle" height="5">
+                  <td colspan="5" style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                </tr>
+                <tr valign="middle">
+                  <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                  <td style="min-width: 40%;width:40%;max-width: 40%;text-align: left;">
+                    <h2 style="font-size: 13px;line-height: 15px;color:#EE7525;font-family: Arial;font-weight: 700;">
+                      Total</h2>
+                  </td>
+                  <td style="min-width: 25%;width:25%;max-width: 25%;text-align: right;"></td>
+                  <td style="min-width: 25%;width:25%;max-width: 25%;text-align: right;">
+                    <h2 style="font-size: 13px;line-height: 15px;color:#EE7525;font-family: Arial;font-weight: 700;">$
+                      xxx.xx</h2>
+                  </td>
+                  <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                </tr>
+                <tr valign="middle" height="5">
+                  <td colspan="5" style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                </tr>
+              </table>
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;">
+              <p style="font-size: 18px;line-height: 20px;color:#000;font-family: Arial;text-align: left;"><br />
+                See you soon,<br />
+                <br />
+                The Unilux RHP team<br />
+                <br />
+                <small style="font-size:11px;">*Advertised chassis price is based on chassis sizes up to 1.5 tons.
+                  Higher prices may apply based on unit sizing.</small><br />
+                <br />
+                Having trouble viewing this email?<br />
+                <a style="text-decoration: none;color:#000" href="https://www.uniluxrhp.com/" target="_blank">Click here</a>
+              </p>
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+          <tr style="background: #E6E7E8" class="full">
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+            <td style="min-width: 90%;width:90%;max-width: 90%;" class="full">
+              <table class="full" width="100%" style="min-width: 100%;width:100%;max-width: 100%;text-align: center;"
+                cellpadding="0" cellspacing="0">
+                <tr valign="bottom" height="20">
+                  <td colspan="3" style="min-width: 100%;width:100%;max-width: 100%;"></td>
+                </tr>
+                <tr valign="bottom" class="full">
+                  <td class="full" style="min-width: 30%;width:30%;max-width: 30%;"><a href="https://www.uniluxrhp.com/"
+                      target="_blank" style="text-decoration: none;color:#000;font-size: 14px;">www.uniluxrhp.com</a>
+                  </td>
+                  <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                  <td class="full" style="min-width: 30%;width:30%;max-width: 30%;"><a href="https://www.uniluxrhp.com/"
+                      target="_blank"><img width="89" src="https://unilux-vfc-rhp-1894585.dev.odoo.com/web/image/945" alt="Logo" /></a><br />
+                    <br />
+                    <a href="mailto:info@uniluxrhp.com"
+                      style="text-decoration: none;color:#000;font-size: 14px;">info@uniluxrhp.com</a>
+                  </td>
+                  <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+                  <td class="full" style="min-width: 30%;width:30%;max-width: 30%;"><a href="tel:1-800-985-8519"
+                      style="text-decoration: none;color:#000;font-size: 14px;">1-800-985-8519</a></td>
+                </tr>
+                <tr valign="bottom" height="25">
+                  <td colspan="3" style="min-width: 100%;width:100%;max-width: 100%;"></td>
+                </tr>
+              </table>
+            </td>
+            <td style="min-width: 5%;width:5%;max-width: 5%;"></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+            </field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    
+</odoo>

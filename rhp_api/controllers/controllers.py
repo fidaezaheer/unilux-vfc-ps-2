@@ -177,6 +177,9 @@ class RhpApi(http.Controller):
         post_data = json.loads(request.httprequest.data)
         result = {}
 
+        
+        
+
         lead = post_data.get('lead')
         appointment = post_data.get('appointment')
 
@@ -222,8 +225,21 @@ class RhpApi(http.Controller):
                         'active': True,
                         
                     })
+                
                 if calendar_appointment:
                     result['calendar.appointment'] = calendar_appointment.id
+                    #Send Email
+                    address = lead.get('Street') +  ' ' + lead.get('Street2') + ', ' + lead.get('City') + ', ' + lead.get('Zip') + ', ' + lead.get('Country')
+                    template = request.env.ref('rhp_api.mail_template_appointment_create').sudo()
+                    email_values = {'date': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%a %b %d, %Y'),
+                                    'time': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%I:%M %p'),
+                                    'address': address
+                                    }
+                    template.write({'email_from': 'toan@syncoria.com'})
+                    template.write({'email_to': appointment.get('Email')})
+                    template.with_context(email_values).send_mail(calendar_appointment.id, force_send=True, email_values=None)
+                    #END Send Email
+
                     result['status'] = True
                     return result
         result['status'] = False
