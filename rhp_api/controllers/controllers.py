@@ -223,7 +223,6 @@ class RhpApi(http.Controller):
                         'appointment_type_id': request.env['calendar.appointment.type'].sudo().search([], limit=1).id,
                         'opportunity_id': lead_obj.id,
                         'active': True,
-                        
                     })
                 
                 if calendar_appointment:
@@ -231,9 +230,21 @@ class RhpApi(http.Controller):
                     #Send Email
                     address = lead.get('Street') +  ' ' + lead.get('Street2') + ', ' + lead.get('City') + ', ' + lead.get('Zip') + ', ' + lead.get('Country')
                     template = request.env.ref('rhp_api.mail_template_appointment_create').sudo()
+                    total = 0
+                    quotation_lines = []
+                    for order in lead_obj.order_ids:
+                        if order.state in ('draft', 'sent'):
+                            quotation_lines.append(order.order_line)
+                            total += order.amount_total
+
+                    print(quotation_lines)
+                    
+
                     email_values = {'date': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%a %b %d, %Y'),
                                     'time': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%I:%M %p'),
-                                    'address': address
+                                    'address': address,
+                                    'quotation_lines': quotation_lines,
+                                    'total': total
                                     }
                     template.write({'email_from': 'toan@syncoria.com'})
                     template.write({'email_to': appointment.get('Email')})
