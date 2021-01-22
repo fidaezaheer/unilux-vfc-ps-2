@@ -26,31 +26,31 @@ class RhpApi(http.Controller):
             #search
             country_obj = request.env['res.country'].search([('name', '=', country)])
             
-            res_partner_obj = request.env['res.partner'].sudo().search([
-                ('name', '=', customer_name), 
-                ('street', '=', street), 
-                ('street2', '=', street2),
-                ('city', '=', city),
-                ('zip', '=', zip),
-                ('country_id', '=', country_obj.id),
-            ], limit=1)
-            #not exist
-                #create
-            #else
-                #return 
-            if res_partner_obj:
-                result['res.partner'] = res_partner_obj.id
-            else:
-                new_res_partner = request.env['res.partner'].sudo().create({
-                        'name': customer_name,
-                        'street': street,
-                        'street2': street2,
-                        'city': city,
-                        'zip': zip,
-                        'country_id': country_obj.id,
-                     })
-                if new_res_partner:
-                    result['res.partner'] = new_res_partner.id
+            # res_partner_obj = request.env['res.partner'].sudo().search([
+            #     ('name', '=', customer_name), 
+            #     ('street', '=', street), 
+            #     ('street2', '=', street2),
+            #     ('city', '=', city),
+            #     ('zip', '=', zip),
+            #     ('country_id', '=', country_obj.id),
+            # ], limit=1)
+            # #not exist
+            #     #create
+            # #else
+            #     #return 
+            # if res_partner_obj:
+            #     result['res.partner'] = res_partner_obj.id
+            # else:
+            new_res_partner = request.env['res.partner'].sudo().create({
+                    'name': customer_name,
+                    'street': street,
+                    'street2': street2,
+                    'city': city,
+                    'zip': zip,
+                    'country_id': country_obj.id,
+                    })
+            if new_res_partner:
+                result['res.partner'] = new_res_partner.id
             #Create lead
             company_obj = request.env['res.company'].sudo().search([('name', '=', 'Unilux RHP')])
             new_crm_lead = request.env['crm.lead'].sudo().create({
@@ -66,16 +66,10 @@ class RhpApi(http.Controller):
             #Get list manufacturer
             manufacturer_category_obj = request.env['res.partner.category'].sudo().search([('name', '=ilike', 'manufacturer')])
             
-            
-            print("manufacturer_category_obj")
-            print(manufacturer_category_obj)
             manufacturer_obj = request.env['res.partner'].sudo().search([
                 ('is_company', '=', True),
                 ('category_id', 'in', [manufacturer_category_obj.id]),
             ])
-            print("manufacturer_obj")
-            print(manufacturer_obj)
-
 
             manufacturer_array = []
             for a in manufacturer_obj:
