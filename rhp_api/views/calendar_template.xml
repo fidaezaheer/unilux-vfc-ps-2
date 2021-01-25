@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="appointment_calendar" inherit_id="website_calendar.appointment_calendar" name="Online Appointment">
+        <xpath expr="." position="replace">
+            <div class="row">
+                <div t-foreach="slots" t-as="month" class="col-lg-6">
+                    <h3 t-esc="month['month']"/>
+                    <table class="table">
+                        <tr class="active">
+                            <th class="text-center">Mon</th>
+                            <th class="text-center">Tue</th>
+                            <th class="text-center">Wed</th>
+                            <th class="text-center">Thu</th>
+                            <th class="text-center">Fri</th>
+                            <th class="text-center">Sat</th>
+                            <th class="text-center">Sun</th>
+                        </tr>
+                        <tr t-foreach="month['weeks']" t-as="weeks" class="o_calendar_days">
+                            <t t-foreach="weeks" t-as="day">
+                                <td t-attf-class="text-center#{day['slots'] and ' o_day dropdown' or ''} #{day['weekend_cls']} #{day['today_cls']}" t-attf-title="#{day['today_cls'] and 'Today' or ''}">
+                                    <t t-if="day['slots']">
+                                        <div class="dropdown-toggle o_slots_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <strong>
+                                            <span t-esc="day['day'].day"/>
+                                        </strong>
+                                        </div>
+                                        <div class="dropdown-menu" role="menu">
+                                            <t t-foreach="day['slots']" t-as="slot">
+                                                <a t-if='slot' role="menuitem" class="dropdown-item"  t-attf-onclick="(function(){ document.getElementById('result').textContent ='#{slot['datetime']}'})();return false;" t-esc="slot['hours']"/>
+                                            </t>
+                                        </div>
+                                    </t>
+                                    <t t-if="not day['slots']">
+                                        <div t-esc="day['day'].day" t-att-class="day['mute_cls']"/>
+                                    </t>
+                                </td>
+                            </t>
+                        </tr>
+                        <tr t-if="len(month['weeks']) == 5" class="o_calendar_days"/>
+                    </table>
+                </div>
+                <p style="margin-left:100px;" id="result"></p>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="appointment" inherit_id="website_calendar.appointment" name="Website Appointment: Schedule Appointment">
+        <xpath expr="." position="replace">
+            <t t-call="website.layout">
+                <t t-set="no_header" t-value="True"/>
+                <t t-set="no_footer" t-value="True"/>
+                <t t-call="rhp_api.appointment_calendar"/>
+            </t>
+        </xpath>
+    </template>
+
+
+
+</odoo>
