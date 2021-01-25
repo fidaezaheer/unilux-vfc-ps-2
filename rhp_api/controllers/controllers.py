@@ -87,12 +87,26 @@ class RhpApi(http.Controller):
 
         leadId = post_data.get('leadId')
         imgUrl = post_data.get('Image')
+        manufacturer_name = post_data.get('Manufacturer')
+        quantity = post_data.get('Quantity')
+        size = post_data.get('Size')
 
-        if leadId and imgUrl:
+        
+
+        if leadId and imgUrl and manufacturer_name and quantity and size:
             #search LEAD
             lead_obj = request.env['crm.lead'].sudo().search([('id', '=', leadId)])
             if lead_obj:
-                #check URL
+                manufacturer_category_obj = request.env['res.partner.category'].sudo().search([('name', '=ilike', 'manufacturer')])
+                manufacturer_obj = request.env['res.partner'].sudo().search([
+                        ('is_company', '=', True),
+                        ('category_id', 'in', [manufacturer_category_obj.id]),
+                        ('name', '=', manufacturer_name),
+                    ])
+
+                company_obj = request.env['res.company'].sudo().search([('name', '=', 'Unilux RHP')])
+
+
                 #convert URL to base64 and import and attach to the lead
                 attachment_obj = request.env['ir.attachment'].sudo().search([('res_model', '=', 'crm.lead'), ('res_id', '=', lead_obj.id)])
                 print(attachment_obj)
@@ -102,29 +116,34 @@ class RhpApi(http.Controller):
                         'res_model': 'crm.lead',
                         'res_id': lead_obj.id,
                         'type': 'binary',
-                        'datas': base64.b64encode(requests.get(imgUrl).content) 
+                        'datas': base64.b64encode(requests.get(imgUrl).content),
+                        'res_partner_id': manufacturer_obj.id,
+                        'quantity': quantity,
+                        'size': size,
+                        'company_id': company_obj.id if company_obj else 1
                      })
                 if ir_attachment:
                     result['status'] = True
                 else:
                     result['status'] = False
                 #Get list product
-                company_obj = request.env['res.company'].sudo().search([('name', '=', 'Unilux RHP')])
                 product_obj = request.env['product.product'].sudo().search([('company_id', '=', company_obj.id)])
                 product_array = []
                 path_info = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url')
 
                 for a in product_obj:
                     temp = {}
-                    temp['Id'] = a.id
-                    temp['Name'] = a.name
-                    temp['Description'] = a.description_sale
-                    temp['Price'] = a.lst_price
-                    temp['Image'] = str(path_info)+'/web/image?model=product.product&field=image_128&id='+str(a.id)+'&unique=1'
-                    temp['IsProduct'] = True
-                    if a.default_code.find("RHPA") != -1:
-                        temp['IsProduct'] = False
-                    product_array.append(temp)
+                    if a.default_code:
+                        temp['Id'] = a.id
+                        temp['Name'] = a.name
+                        temp['Description'] = a.description_sale
+                        temp['Price'] = a.lst_price
+                        temp['Image'] = str(path_info)+'/web/image?model=product.product&field=image_128&id='+str(a.id)+'&unique=1'
+                        temp['IsProduct'] = True
+                        if a.default_code.find("RHPA") != -1:
+                            temp['IsProduct'] = False
+                        
+                        product_array.append(temp)
                 result['products'] = product_array
         return result
     

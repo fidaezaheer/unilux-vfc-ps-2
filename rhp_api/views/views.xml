@@ -15,6 +15,20 @@
                         </div>
                     </button>
                 </xpath>
+
+                <xpath expr="//page[@name='extra']" position="after">
+                    <page string="Images" name="images">
+                        <field name="attachment_line">
+                            <tree>
+                                <field name="res_partner_id"/>
+                                <field name="quantity"/>
+                                <field name="size"/>
+                            </tree>
+                        </field>
+                    </page>
+                    
+
+                </xpath>
             </data>
         </field>
     </record>

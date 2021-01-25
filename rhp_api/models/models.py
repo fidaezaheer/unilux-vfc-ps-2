@@ -18,6 +18,9 @@ class LeadInherit(models.Model):
     _inherit = "crm.lead"
     image_count = fields.Integer('# Image', compute='_compute_image_count')
 
+    attachment_line = fields.One2many('ir.attachment', 'res_id', string='Attachment Lines')
+
+
     def _compute_image_count(self):
         attachment_data = self.env['ir.attachment'].sudo().search([('res_model', '=', 'crm.lead'), ('res_id', '=', self.id), ])
         self.image_count = len(attachment_data)
@@ -30,3 +33,11 @@ class LeadInherit(models.Model):
         }
         action['domain'] = ['&', ('res_model', '=', 'crm.lead'), ('res_id', 'in', self.ids)]
         return action
+
+
+class IrAttachment(models.Model):
+    _inherit = 'ir.attachment'
+
+    size = fields.Char('Size')
+    quantity = fields.Integer('Quantity')
+    res_partner_id = fields.Many2one('res.partner', 'Manufacturer')

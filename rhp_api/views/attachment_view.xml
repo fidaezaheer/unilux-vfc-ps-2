@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <record id="view_attachment_form_inherit_rhp" model="ir.ui.view">
+        <field name="name">ir.attachment.form.inherit.rhp</field>
+        <field name="model">ir.attachment</field>
+        <field name="inherit_id" ref="base.view_attachment_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <group name="description_group" position="after">
+                    <group name="rhp" string="RHP">
+                        <field name="res_partner_id"/>
+                        <field name="quantity"/>
+                        <field name="size"/>
+                    </group>
+                </group>
+            </data>
+        </field>
+    </record>
+</odoo>
