@@ -16,7 +16,7 @@
                     </button>
                 </xpath>
 
-                <xpath expr="//page[@name='extra']" position="after">
+                <!-- <xpath expr="//page[@name='extra']" position="after">
                     <page string="Images" name="images">
                         <field name="attachment_line">
                             <tree>
@@ -28,7 +28,7 @@
                     </page>
                     
 
-                </xpath>
+                </xpath> -->
             </data>
         </field>
     </record>
