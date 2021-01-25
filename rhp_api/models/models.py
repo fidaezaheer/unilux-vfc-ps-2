@@ -35,9 +35,9 @@ class LeadInherit(models.Model):
         return action
 
 
-# class IrAttachment(models.Model):
-#     _inherit = 'ir.attachment'
+class IrAttachment(models.Model):
+    _inherit = 'ir.attachment'
 
-#     size = fields.Char('Size')
-#     quantity = fields.Integer('Quantity')
-#     res_partner_id = fields.Many2one('res.partner', 'Manufacturer')
+    size = fields.Char('Size')
+    quantity = fields.Integer('Quantity')
+    res_partner_id = fields.Many2one('res.partner', 'Manufacturer')
