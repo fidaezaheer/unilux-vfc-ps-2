@@ -24,7 +24,7 @@
         'views/views.xml',
         'views/calendar_template.xml',
         'views/email_appointment_template.xml',
-        # 'views/attachment_view.xml'
+        'views/attachment_view.xml'
     ],
     
 }   
