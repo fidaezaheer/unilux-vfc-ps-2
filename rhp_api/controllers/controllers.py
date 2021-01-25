@@ -121,6 +121,9 @@ class RhpApi(http.Controller):
                     temp['Description'] = a.description_sale
                     temp['Price'] = a.lst_price
                     temp['Image'] = str(path_info)+'/web/image?model=product.product&field=image_128&id='+str(a.id)+'&unique=1'
+                    temp['IsProduct'] = True
+                    if a.default_code.find("RHPA") != -1:
+                        temp['IsProduct'] = False
                     product_array.append(temp)
                 result['products'] = product_array
         return result
@@ -282,8 +285,27 @@ class RhpApi(http.Controller):
             return result
         result['status'] = False
         return result
+    
+    @http.route('/api/GetProducts', type='http', auth="public", methods=['GET'], website=True)
+    def get_products(self, **get):
+        company_obj = request.env['res.company'].sudo().search([('name', '=', 'Unilux RHP')])
+        product_obj = request.env['product.product'].sudo().search([('company_id', '=', company_obj.id)])
+        product_array = []
+        result = {}
+        path_info = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url')
 
-# class AppointmentIframe(http.Controller):
-#      @http.route('/onlineappoinement', type='http', auth='public', website=True)
-#      def show_custom_webpage(self, **kw):
-#           return http.request.render('rhp_api.appointment_iframe', {})
+        for a in product_obj:
+            temp = {}
+            if a.default_code:
+                temp['Id'] = a.id
+                temp['Name'] = a.name
+                temp['Description'] = a.description_sale
+                temp['Price'] = a.lst_price
+                temp['Image'] = str(path_info)+'/web/image?model=product.product&field=image_128&id='+str(a.id)+'&unique=1'
+                temp['IsProduct'] = True
+                if a.default_code.find("RHPA") != -1:
+                    temp['IsProduct'] = False
+                
+                product_array.append(temp)
+        result['products'] = product_array
+        return json.dumps(result)
