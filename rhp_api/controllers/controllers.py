@@ -178,9 +178,6 @@ class RhpApi(http.Controller):
         post_data = json.loads(request.httprequest.data)
         result = {}
 
-        
-        
-
         lead = post_data.get('lead')
         appointment = post_data.get('appointment')
 
@@ -202,6 +199,7 @@ class RhpApi(http.Controller):
             #update crm.lead?
             lead_obj = request.env['crm.lead'].sudo().search([('id', '=', lead.get('leadId'))])
             lead_obj.write({
+                'name': lead.get('FirstName') + ' ' + lead.get('SecondName') + "'s opportunity",
                 'partner_name': lead.get('FirstName') + ' ' + lead.get('SecondName'),
                 'mobile': lead.get('Phone'),
                 'street': lead.get('Street'),
