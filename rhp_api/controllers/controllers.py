@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from ics import Calendar, Event
 from werkzeug.urls import url_encode
 from odoo.tools import html2plaintext
+import pytz
 
 class RhpApi(http.Controller):
 
@@ -213,12 +214,22 @@ class RhpApi(http.Controller):
             })
             result['leadId'] = lead_obj.id
             if appointment:
-                date_start = appointment.get('DateTime')
-                print("****DATE")
-                print(date_start)
-                date_end = datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S') + timedelta(minutes=30)
-                date_end = date_end.strftime('%Y-%m-%d %I:%M:%S')
-                print(date_end)
+                appoinement_type = request.env['calendar.appointment.type'].sudo().search([], limit=1)
+
+                datetime_api = datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %H:%M:%S')
+                backend = pytz.timezone('UTC')
+                frontend = pytz.timezone(appoinement_type.appointment_tz)
+                offset = (frontend.localize(datetime_api) -  backend.localize(datetime_api).astimezone(frontend)).seconds/3600
+                start = datetime_api + timedelta(hours=offset)
+                end = start + timedelta(hours=appoinement_type.appointment_duration)
+                date_start = start.strftime('%Y-%m-%d %H:%M:%S')
+                date_end = end.strftime('%Y-%m-%d %H:%M:%S')
+
+                google_start = start.strftime('%Y%m%dT%H%M%SZ')
+                google_end = end.strftime('%Y%m%dT%H%M%SZ')
+                print(google_start)
+                print(google_end)
+
                 calendar_appointment = request.env['calendar.event'].sudo().create({
                         'name': appointment.get('Name'),
                         'start': date_start,
@@ -250,13 +261,14 @@ class RhpApi(http.Controller):
                     params = {
                         'action': 'TEMPLATE',
                         'text': 'RHP Appointment',
-                        'dates': date_start + '/' + date_end,
+                        'dates': google_start + '/' + google_end,
                         'details': html2plaintext(details.encode('utf-8'))
                     }
                     if calendar_appointment.location:
                         params.update(location=calendar_appointment.location.replace('\n', ' '))
                     encoded_params = url_encode(params)
                     google_url = 'https://www.google.com/calendar/render?' + encoded_params
+                    
 
                     email_values = {'date': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%a %b %d, %Y'),
                                     'time': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%I:%M %p'),
@@ -272,8 +284,8 @@ class RhpApi(http.Controller):
                     c = Calendar()
                     e = Event()
                     e.name = "RHP Appointment: "+ lead.get('FirstName') + ' ' + lead.get('SecondName')
-                    e.begin = datetime.strptime(date_start, '%Y-%m-%d %I:%M:%S')
-                    e.end = datetime.strptime(date_end, '%Y-%m-%d %I:%M:%S')
+                    e.begin = datetime.strptime(date_start, '%Y-%m-%d %H:%M:%S')
+                    e.end = datetime.strptime(date_end, '%Y-%m-%d %H:%M:%S')
                     c.events.add(e)
                     c.events
 
