@@ -6,6 +6,7 @@ import base64
 import requests
 from ast import literal_eval
 from datetime import datetime
+from ics import Calendar, Event
 
 class RhpApi(http.Controller):
 
@@ -236,9 +237,6 @@ class RhpApi(http.Controller):
                             quotation_lines.append(order.order_line)
                             total += order.amount_total
 
-                    print(quotation_lines)
-                    
-
                     email_values = {'date': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%a %b %d, %Y'),
                                     'time': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%I:%M %p'),
                                     'address': address,
@@ -247,6 +245,19 @@ class RhpApi(http.Controller):
                                     }
                     template.write({'email_from': 'toan@syncoria.com'})
                     template.write({'email_to': appointment.get('Email')})
+
+                    #Attachment
+                    c = Calendar()
+                    e = Event()
+                    e.name = "RHP Appointment: "+ lead.get('FirstName') + ' ' + lead.get('SecondName')
+                    e.begin = datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S')
+                    c.events.add(e)
+                    c.events
+                    attachment = request.env['ir.attachment'].create({'name': 'RHP_Appointment.ics',
+                                  'datas_fname': 'RHP_Appointment.ics',
+                                  'datas': str(c).encode('base64')})
+                    template.attachment_ids = [(6,0,[attachment.id])]
+                    
                     template.with_context(email_values).send_mail(calendar_appointment.id, force_send=True, email_values=None)
                     #END Send Email
 
