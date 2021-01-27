@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-from odoo import http
+from odoo import http, fields
 from odoo.http import request
 import json
 import base64
 import requests
 from ast import literal_eval
-from datetime import datetime
+from datetime import datetime, timedelta
 from ics import Calendar, Event
+from werkzeug.urls import url_encode
+from odoo.tools import html2plaintext
 
 class RhpApi(http.Controller):
 
@@ -211,10 +213,16 @@ class RhpApi(http.Controller):
             })
             result['leadId'] = lead_obj.id
             if appointment:
+                date_start = appointment.get('DateTime')
+                print("****DATE")
+                print(date_start)
+                date_end = datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S') + timedelta(minutes=30)
+                date_end = date_end.strftime('%Y-%m-%d %I:%M:%S')
+                print(date_end)
                 calendar_appointment = request.env['calendar.event'].sudo().create({
                         'name': appointment.get('Name'),
-                        'start': appointment.get('DateTime'),
-                        'stop': appointment.get('DateTime'),
+                        'start': date_start,
+                        'stop': date_end,
                         'partner_ids': [(6, 0, [res_partner_obj.id])],
                         'res_model': 'calendar.appointment.type',
                         'res_model_id': request.env['ir.model'].sudo().search([('model', '=', 'calendar.appointment.type')], limit=1).id,
@@ -237,11 +245,25 @@ class RhpApi(http.Controller):
                             quotation_lines.append(order.order_line)
                             total += order.amount_total
 
+                    #Email
+                    details = "RHP Appointment: " + appointment.get('Name') + ' on ' + datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%a %b %d, %Y %I:%M %p') + ' at ' + address
+                    params = {
+                        'action': 'TEMPLATE',
+                        'text': 'RHP Appointment',
+                        'dates': date_start + '/' + date_end,
+                        'details': html2plaintext(details.encode('utf-8'))
+                    }
+                    if calendar_appointment.location:
+                        params.update(location=calendar_appointment.location.replace('\n', ' '))
+                    encoded_params = url_encode(params)
+                    google_url = 'https://www.google.com/calendar/render?' + encoded_params
+
                     email_values = {'date': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%a %b %d, %Y'),
                                     'time': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%I:%M %p'),
                                     'address': address,
                                     'quotation_lines': quotation_lines,
-                                    'total': total
+                                    'total': total,
+                                    'google_url': google_url,
                                     }
                     template.write({'email_from': 'toan@syncoria.com'})
                     template.write({'email_to': appointment.get('Email')})
@@ -250,13 +272,23 @@ class RhpApi(http.Controller):
                     c = Calendar()
                     e = Event()
                     e.name = "RHP Appointment: "+ lead.get('FirstName') + ' ' + lead.get('SecondName')
-                    e.begin = datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S')
+                    e.begin = datetime.strptime(date_start, '%Y-%m-%d %I:%M:%S')
+                    e.end = datetime.strptime(date_end, '%Y-%m-%d %I:%M:%S')
                     c.events.add(e)
                     c.events
-                    attachment = request.env['ir.attachment'].create({'name': 'RHP_Appointment.ics',
-                                  'datas_fname': 'RHP_Appointment.ics',
-                                  'datas': str(c).encode('base64')})
+
+                    company_obj = request.env['res.company'].sudo().search([('name', '=', 'Unilux RHP')])
+                    attachment = request.env['ir.attachment'].sudo().create({
+                        'name': 'RHP_' + lead_obj.name + '_Appointment.ics',
+                        'res_model': 'calendar.event',
+                        'res_id': calendar_appointment.id,
+                        'type': 'binary',
+                        'datas': base64.b64encode(bytes(str(c), 'utf-8')),
+                        'company_id': company_obj.id if company_obj else 1
+                     })
                     template.attachment_ids = [(6,0,[attachment.id])]
+                    
+                    #Link
                     
                     template.with_context(email_values).send_mail(calendar_appointment.id, force_send=True, email_values=None)
                     #END Send Email

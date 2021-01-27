@@ -81,7 +81,7 @@
                       <tr valign="bottom" class="full">
                         <td class="full"
                           style="min-width: 100%;width:100%;max-width: 100%;background:#009B74;border-radius:5px;height:40px;line-height: 40px;font-weight: 700;text-align:center;">
-                          <a href="javascript:void(0);"
+                          <a href="${ctx.get('google_url')}"
                             style="display:inline-block;font-family:Arial;font-size:14px;font-weight:700;color:#000;background:#009B74;min-width:130px;max-width:130px;width:130px;height:40px;line-height: 38px;text-align: center;text-decoration: none;margin: 0;padding: 0;">
                             Add to Calendar
                           </a>
