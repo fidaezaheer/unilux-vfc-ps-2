@@ -26,21 +26,6 @@ class RhpApi(http.Controller):
             #search
             country_obj = request.env['res.country'].search([('name', '=', country)])
             
-            # res_partner_obj = request.env['res.partner'].sudo().search([
-            #     ('name', '=', customer_name), 
-            #     ('street', '=', street), 
-            #     ('street2', '=', street2),
-            #     ('city', '=', city),
-            #     ('zip', '=', zip),
-            #     ('country_id', '=', country_obj.id),
-            # ], limit=1)
-            # #not exist
-            #     #create
-            # #else
-            #     #return 
-            # if res_partner_obj:
-            #     result['res.partner'] = res_partner_obj.id
-            # else:
             new_res_partner = request.env['res.partner'].sudo().create({
                     'name': customer_name,
                     'street': street,
