@@ -65,7 +65,9 @@ class CalendarAppointmentTypeInherit(models.Model):
         start = today
         month_dates_calendar = cal.Calendar(0).monthdatescalendar
         months = []
+        month_cal = 0
         while (start.year, start.month) <= (last_day.year, last_day.month):
+            month_cal += 1
             dates = month_dates_calendar(start.year, start.month)
             for week_index, week in enumerate(dates):
                 for day_index, day in enumerate(week):
@@ -97,6 +99,7 @@ class CalendarAppointmentTypeInherit(models.Model):
 
             months.append({
                 'month': format_datetime(start, 'MMMM Y', locale=get_lang(self.env).code),
+                'month_id': month_cal,
                 'weeks': dates
             })
             start = start + relativedelta(months=1)
