@@ -31,14 +31,14 @@ class Message(models.Model):
                     vals['model'] = 'res.partner'
                     vals['res_id'] = record.partner_id.id
                     record.partner_id.message_post(body=vals.get('body'))
-                    # self.create(vals)
+                    self.create(vals)
             elif vals.get('model') == 'project.task':
                 print("record.helpdesk_ticket_id >>>>>>>>>>>>>>", record.helpdesk_ticket_id)
                 if record.helpdesk_ticket_id:
                     vals['model'] = 'helpdesk.ticket'
                     vals['res_id'] = record.helpdesk_ticket_id.id
                     record.helpdesk_ticket_id.message_post(body=vals.get('body'))
-                    # self.create(vals)
+                    self.create(vals)
             elif vals.get('model') == 'sale.order':
                 print("record.helpdesk_ids >>>>>>>>>>>>>", record.helpdesk_ids)
                 if record.helpdesk_ids:
@@ -46,12 +46,12 @@ class Message(models.Model):
                         vals['model'] = 'helpdesk.ticket'
                         vals['res_id'] = helpdesk.id
                         helpdesk.message_post(body=vals.get('body'))
-                        # self.create(vals)
+                        self.create(vals)
                 elif record.task_id and record.task_id.helpdesk_ticket_id:
                     vals['model'] = 'helpdesk.ticket'
                     vals['res_id'] = record.task_id.helpdesk_ticket_id.id
                     record.task_id.helpdesk_ticket_id.message_post(body=vals.get('body'))
-                    # self.create(vals)
+                    self.create(vals)
             elif vals.get('model') == 'account.move':
                 if record.invoice_line_ids and record.invoice_line_ids.mapped('sale_line_ids') and record.invoice_line_ids.mapped('sale_line_ids').mapped('task_id') and record.invoice_line_ids.mapped('sale_line_ids').mapped('task_id').mapped('helpdesk_ticket_id'):
                     print("record.invoice_line_ids.mapped('sale_line_ids').mapped('task_id').mapped('helpdesk_ticket_id') >>>>>>>>>>>", record.invoice_line_ids.mapped('sale_line_ids').mapped('task_id').mapped('helpdesk_ticket_id'))
@@ -59,5 +59,5 @@ class Message(models.Model):
                         vals['model'] = 'helpdesk.ticket'
                         vals['res_id'] = helpdesk.id
                         helpdesk.message_post(body=vals.get('body'))
-                        # self.create(vals)
+                        self.create(vals)
         return True
