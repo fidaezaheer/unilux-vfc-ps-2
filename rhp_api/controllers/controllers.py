@@ -257,7 +257,7 @@ class RhpApi(http.Controller):
                             total += order.amount_total
 
                     #Email
-                    details = "RHP Appointment: " + appointment.get('Name') + ' on ' + datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%a %b %d, %Y %I:%M %p') + ' at ' + address
+                    details = "RHP Appointment: " + appointment.get('Name') + ' on ' + datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %H:%M:%S').strftime('%a %b %d, %Y %I:%M %p') + ' at ' + address
                     params = {
                         'action': 'TEMPLATE',
                         'text': 'RHP Appointment',
@@ -270,8 +270,8 @@ class RhpApi(http.Controller):
                     google_url = 'https://www.google.com/calendar/render?' + encoded_params
                     
 
-                    email_values = {'date': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%a %b %d, %Y'),
-                                    'time': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %I:%M:%S').strftime('%I:%M %p'),
+                    email_values = {'date': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %H:%M:%S').strftime('%a %b %d, %Y'),
+                                    'time': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %H:%M:%S').strftime('%I:%M %p'),
                                     'address': address,
                                     'quotation_lines': quotation_lines,
                                     'total': total,
