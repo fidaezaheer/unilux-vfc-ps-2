@@ -25,18 +25,18 @@ class RhpApi(http.Controller):
         zip = post_data.get('Zip')
         city = post_data.get('City')
         country = post_data.get('Country')
+        province = post_data.get('Province')
 
-        if customer_name and (street or street2) and zip and city and country:
+        if customer_name:
             #search
-            country_obj = request.env['res.country'].search([('name', '=', country)])
-            
             new_res_partner = request.env['res.partner'].sudo().create({
                     'name': customer_name,
-                    'street': street,
-                    'street2': street2,
-                    'city': city,
-                    'zip': zip,
-                    'country_id': country_obj.id,
+                    'street': street or '',
+                    'street2': street2 or '',
+                    'city': city or '',
+                    'zip': zip or '',
+                    'country_id': request.env['res.country'].search([('name', '=', country)]).id or None,
+                    'state_id': request.env['res.country.state'].search([('name', '=', province)]).id or None,
                     })
             if new_res_partner:
                 result['res.partner'] = new_res_partner.id
@@ -187,7 +187,6 @@ class RhpApi(http.Controller):
 
         if lead:
             #update res.partner
-            country_obj = request.env['res.country'].search([('name', '=', lead.get('Country'))])
             res_partner_obj = request.env['res.partner'].sudo().search([('id', '=', lead.get('res.partner'))])
             res_partner_obj.write({
                 'name': lead.get('FirstName') + ' ' + lead.get('SecondName'),
@@ -196,7 +195,8 @@ class RhpApi(http.Controller):
                 'street2': lead.get('Street2'),
                 'city': lead.get('City'),
                 'zip': lead.get('Zip'),
-                'country_id': country_obj.id,
+                'country_id': request.env['res.country'].search([('name', '=', lead.get('Country'))]).id or None,
+                'state_id': request.env['res.country.state'].search([('name', '=', lead.get('Province'))]).id or None,
                 'email': lead.get('Email')
             }) 
             result['res.partner'] = res_partner_obj.id
@@ -210,7 +210,7 @@ class RhpApi(http.Controller):
                 'street2': lead.get('Street2'),
                 'city': lead.get('City'),
                 'zip': lead.get('Zip'),
-                'country_id': country_obj.id,
+                'country_id': request.env['res.country'].search([('name', '=', lead.get('Country'))]).id or None,
             })
             result['leadId'] = lead_obj.id
             if appointment:
@@ -320,19 +320,20 @@ class RhpApi(http.Controller):
         zip = post_data.get('Zip')
         city = post_data.get('City')
         country = post_data.get('Country')
+        province = post_data.get('Province')
         phone = post_data.get('Phone')
         email = post_data.get('Email')
         additional_detail = post_data.get('AdditionalDetail')
 
         if res_partner_obj:
             #update res.partner
-            country_obj = request.env['res.country'].search([('name', '=', country)])
             res_partner_obj.write({
                 'street': street,
                 'street2': street2,
                 'city': city,
                 'zip': zip,
-                'country_id': country_obj.id,
+                'country_id': request.env['res.country'].search([('name', '=', country)]).id or None,
+                'state_id': request.env['res.country.state'].search([('name', '=', province)]).id or None,
                 'phone': phone,
                 'email': email,
                 'comment': additional_detail,
