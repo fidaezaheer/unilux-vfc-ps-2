@@ -38,28 +38,28 @@
                             <th class="text-center">Wed</th>
                             <th class="text-center">Thu</th>
                             <th class="text-center">Fri</th>
-                            <th class="text-center">Sat</th>
-                            <th class="text-center">Sun</th>
                         </tr>
                         <tr t-foreach="month['weeks']" t-as="weeks" class="o_calendar_days">
                             <t t-foreach="weeks" t-as="day">
-                                <td t-attf-class="text-center#{day['slots'] and ' o_day dropdown' or ''} #{day['weekend_cls']} #{day['today_cls']}" t-attf-title="#{day['today_cls'] and 'Today' or ''}">
-                                    <t t-if="day['slots']">
-                                        <div class="dropdown-toggle o_slots_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <strong>
-                                            <span t-esc="day['day'].day"/>
-                                        </strong>
-                                        </div>
-                                        <div class="dropdown-menu" role="menu">
-                                            <t t-foreach="day['slots']" t-as="slot">
-                                                <a t-if='slot' role="menuitem" class="dropdown-item"  t-attf-onclick="(function(){ parent.postMessage('#{slot['datetime']}', '*'); })();return false;" t-esc="slot['hours']"/>
-                                            </t>
-                                        </div>
-                                    </t>
-                                    <t t-if="not day['slots']">
-                                        <div t-esc="day['day'].day" t-att-class="day['mute_cls']"/>
-                                    </t>
-                                </td>
+                                    <t t-if="not day['weekend_cls']">
+                                    <td t-attf-class="text-center#{day['slots'] and ' o_day dropdown' or ''} #{day['today_cls']}" t-attf-title="#{day['today_cls'] and 'Today' or ''}">
+                                        <t t-if="day['slots']">
+                                            <div class="dropdown-toggle o_slots_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <strong>
+                                                <span t-esc="day['day'].day"/>
+                                            </strong>
+                                            </div>
+                                            <div class="dropdown-menu" role="menu">
+                                                <t t-foreach="day['slots']" t-as="slot">
+                                                    <a t-if='slot' role="menuitem" class="dropdown-item"  t-attf-onclick="(function(){ parent.postMessage('#{slot['datetime']}', '*'); })();return false;" t-esc="slot['hours']"/>
+                                                </t>
+                                            </div>
+                                        </t>
+                                        <t t-if="not day['slots'] and not day['weekend_cls']">
+                                            <div t-esc="day['day'].day" t-att-class="day['mute_cls']"/>
+                                        </t>
+                                    </td>
+                                </t>
                             </t>
                         </tr>
                         <tr t-if="len(month['weeks']) == 5" class="o_calendar_days"/>
