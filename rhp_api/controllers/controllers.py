@@ -351,8 +351,8 @@ class RhpApi(http.Controller):
         product_obj = request.env['product.product'].sudo().search([('company_id', '=', company_obj.id)])
         product_array = []
         result = {}
-        path_info = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url')
-
+        # path_info = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        path_info = 'https://unilux-vfc-rhp-1894585.dev.odoo.com'
         for a in product_obj:
             temp = {}
             if a.default_code:
