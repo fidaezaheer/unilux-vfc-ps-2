@@ -119,7 +119,6 @@ class RhpApi(http.Controller):
                 product_obj = request.env['product.product'].sudo().search([('company_id', '=', company_obj.id)])
                 product_array = []
                 #path_info = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url')
-                path_info = 'https://unilux-vfc-rhp-1894585.dev.odoo.com'
 
                 for a in product_obj:
                     temp = {}
@@ -128,7 +127,7 @@ class RhpApi(http.Controller):
                         temp['Name'] = a.name
                         temp['Description'] = a.description_sale
                         temp['Price'] = a.lst_price
-                        temp['Image'] = str(path_info)+'/web/image?model=product.product&field=image_128&id='+str(a.id)+'&unique=1'
+                        temp['Image'] = 'data:image/jpeg;base64,' + a.image_1920.decode()
                         temp['IsProduct'] = True
                         if a.default_code.find("RHPA") != -1:
                             temp['IsProduct'] = False
@@ -352,7 +351,6 @@ class RhpApi(http.Controller):
         product_array = []
         result = {}
         # path_info = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        path_info = 'https://unilux-vfc-rhp-1894585.dev.odoo.com'
         for a in product_obj:
             temp = {}
             if a.default_code:
@@ -360,7 +358,7 @@ class RhpApi(http.Controller):
                 temp['Name'] = a.name
                 temp['Description'] = a.description_sale
                 temp['Price'] = a.lst_price
-                temp['Image'] = str(path_info)+'/web/image?model=product.product&field=image_128&id='+str(a.id)+'&unique=1'
+                temp['Image'] = 'data:image/jpeg;base64,' + a.image_1920.decode()
                 temp['IsProduct'] = True
                 if a.default_code.find("RHPA") != -1:
                     temp['IsProduct'] = False
