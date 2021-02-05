@@ -127,7 +127,10 @@ class RhpApi(http.Controller):
                         temp['Name'] = a.name
                         temp['Description'] = a.description_sale
                         temp['Price'] = a.lst_price
-                        temp['Image'] =  'data:image/jpeg;base64,' + a.image_1920.decode() if a.image_1920 != None else ''
+                        if a.image_1920 != False: 
+                            temp['Image'] = 'data:image/jpeg;base64,' + a.image_1920.decode()
+                        else:
+                            temp['Image'] = ''
                         temp['IsProduct'] = True
                         if a.default_code.find("RHPA") != -1:
                             temp['IsProduct'] = False
@@ -351,6 +354,7 @@ class RhpApi(http.Controller):
         product_array = []
         result = {}
         # path_info = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        print(product_obj)
         for a in product_obj:
             temp = {}
             if a.default_code:
@@ -358,7 +362,10 @@ class RhpApi(http.Controller):
                 temp['Name'] = a.name
                 temp['Description'] = a.description_sale
                 temp['Price'] = a.lst_price
-                temp['Image'] = 'data:image/jpeg;base64,' + a.image_1920.decode() if a.image_1920 != None else ''
+                if a.image_1920 != False: 
+                    temp['Image'] = 'data:image/jpeg;base64,' + a.image_1920.decode()
+                else:
+                    temp['Image'] = ''
                 temp['IsProduct'] = True
                 if a.default_code.find("RHPA") != -1:
                     temp['IsProduct'] = False
