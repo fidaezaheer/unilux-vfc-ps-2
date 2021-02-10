@@ -1,0 +1,37 @@
+<odoo>
+  <data>
+    <record id="crm_api_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.form</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//button[@name='action_schedule_meeting']" position="after">
+                    <button name="action_attachment" type="object" class="oe_stat_button" icon="fa-paperclip" attrs="{'invisible': [('type', '=', 'lead')]}">
+                        <div class="o_stat_info">
+                            <field name="image_count" class="o_stat_value"/>
+                            <span class="o_stat_text" attrs="{'invisible': [('image_count', '&lt;', 2)]}"> Images</span>
+                            <span class="o_stat_text" attrs="{'invisible': [('image_count', '&gt;', 1)]}"> Image</span>
+                        </div>
+                    </button>
+                </xpath>
+
+                <xpath expr="//page[@name='extra']" position="after">
+                    <page string="Images" name="images">
+                        <field name="attachment_line">
+                            <tree>
+                                <field name="res_partner_id"/>
+                                <field name="quantity"/>
+                                <field name="size"/>
+                            </tree>
+                        </field>
+                    </page>
+                    
+
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+  </data>
+</odoo>

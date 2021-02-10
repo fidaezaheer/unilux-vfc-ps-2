@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="appointment_calendar" inherit_id="website_calendar.appointment_calendar" name="Online Appointment">
+        <xpath expr="." position="replace">
+            <div class="o_calendar_sidebar">
+                
+                
+                
+                
+                <div t-foreach="slots" t-as="month" class="col-lg-6" t-attf-id="month_#{month['month_id']}" style="display: block;">
+                    <div>
+                        <h3 t-esc="month['month']" style="display:inline-block;"/>
+                        <div style="float:right;cursor:pointer;padding-top:5px;padding-right:10px;font-size:larger;">
+                            <a class="btn_previous" style="display:none;color: #5f6368;fill: #5f6368;opacity: 1;" t-attf-onclick="(function(){ document.getElementById('month_1').style.display = 'block'; document.getElementById('month_2').style.display = 'none';
+                                                                                var nexts = document.getElementsByClassName('btn_next'); 
+                                                                                for (var i=0;i&lt;nexts.length;i+=1){
+                                                                                    nexts[i].style.display = 'inline-block';
+                                                                                }
+                                                                                var previous = document.getElementsByClassName('btn_previous');
+                                                                                for (var i=0;i&lt;previous.length;i+=1){
+                                                                                    previous[i].style.display = 'none';
+                                                                                }})();return false;">&lt;</a>
+                            <a class="btn_next" style="color: #5f6368;fill: #5f6368;opacity: 1;" t-attf-onclick="(function(){ document.getElementById('month_1').style.display = 'none'; document.getElementById('month_2').style.display = 'block';
+                                                                                var nexts = document.getElementsByClassName('btn_next'); 
+                                                                                for (var i=0;i&lt;nexts.length;i+=1){
+                                                                                    nexts[i].style.display = 'none';
+                                                                                }
+                                                                                var previous = document.getElementsByClassName('btn_previous');
+                                                                                for (var i=0;i&lt;previous.length;i+=1){
+                                                                                    previous[i].style.display = 'inline-block';
+                                                                                }})();return false;">&gt;</a>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <tr class="active">
+                            <th class="text-center">Mon</th>
+                            <th class="text-center">Tue</th>
+                            <th class="text-center">Wed</th>
+                            <th class="text-center">Thu</th>
+                            <th class="text-center">Fri</th>
+                        </tr>
+                        <tr t-foreach="month['weeks']" t-as="weeks" class="o_calendar_days">
+                            <t t-foreach="weeks" t-as="day">
+                                    <t t-if="not day['weekend_cls']">
+                                    <td t-attf-class="text-center#{day['slots'] and ' o_day dropdown' or ''} #{day['today_cls']}" t-attf-title="#{day['today_cls'] and 'Today' or ''}">
+                                        <t t-if="day['slots']">
+                                            <div class="dropdown-toggle o_slots_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <strong>
+                                                <span t-esc="day['day'].day"/>
+                                            </strong>
+                                            </div>
+                                            <div class="dropdown-menu" role="menu">
+                                                <t t-foreach="day['slots']" t-as="slot">
+                                                    <a t-if='slot' role="menuitem" class="dropdown-item"  t-attf-onclick="(function(){ parent.postMessage('#{slot['datetime']}', '*'); })();return false;" t-esc="slot['hours']"/>
+                                                </t>
+                                            </div>
+                                        </t>
+                                        <t t-if="not day['slots'] and not day['weekend_cls']">
+                                            <div t-esc="day['day'].day" t-att-class="day['mute_cls']"/>
+                                        </t>
+                                    </td>
+                                </t>
+                            </t>
+                        </tr>
+                        <tr t-if="len(month['weeks']) == 5" class="o_calendar_days"/>
+                    </table>
+                </div>
+                <p style="margin-left:100px;" id="result"></p>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="appointment" inherit_id="website_calendar.appointment" name="Website Appointment: Schedule Appointment">
+        <xpath expr="." position="replace">
+            <t t-call="website.layout">
+                <t t-set="no_header" t-value="True"/>
+                <t t-set="no_footer" t-value="True"/>
+                <t t-call="rhp_api.appointment_calendar"/>
+            </t>
+        </xpath>
+    </template>
+
+
+    <template id="assets_frontend" inherit_id="website.assets_frontend" name="Online Appointment">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/rhp_api/static/src/js/rhp_calendar_appointment.js"/>
+        </xpath>
+    </template>
+
+
+</odoo>
