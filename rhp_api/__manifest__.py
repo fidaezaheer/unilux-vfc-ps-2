@@ -26,5 +26,8 @@
         'views/email_appointment_template.xml',
         'views/attachment_view.xml'
     ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
     
 }   
