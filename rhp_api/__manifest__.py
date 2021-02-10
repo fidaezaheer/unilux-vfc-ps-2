@@ -2,7 +2,7 @@
 {
     'name': "Unilux RHP APIs",
 
-    'summary': "",
+    'summary': "The module use for supporting RHP Webiste to communicate with Odoo backend.",
 
     'description': "",
 
