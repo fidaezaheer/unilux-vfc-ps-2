@@ -331,7 +331,7 @@ class RhpApi(http.Controller):
                                                     'time': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %H:%M:%S').strftime('%I:%M %p'),
                                                     'address': address,
                                                     'installer_name': employee.name,
-                                                    'phone': res_partner_obj.phone,
+                                                    'phone': appointment.get('Phone'),
                                                     }
                             template_installer.with_context(email_installer_values).send_mail(calendar_appointment.id, force_send=True, email_values=None)  
                     #END Send Email
