@@ -225,13 +225,8 @@ class RhpApi(http.Controller):
                 for employee in appoinement_type.employee_ids:
                     if employee.company_id.name == 'Unilux RHP':
                         res_partner = request.env['res.partner'].sudo().search([('email', '=', employee.work_email)], limit=1)
-                        print(res_partner)
-                        print(res_partner.name)
-                        print(employee.work_email)
                         if res_partner:
                             calendar_partner_ids.append(res_partner.id)
-                print('calendar_partner_ids')
-                print(calendar_partner_ids)
 
                 datetime_api = datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %H:%M:%S')
                 backend = pytz.timezone('UTC')
@@ -261,6 +256,11 @@ class RhpApi(http.Controller):
                 
                 if calendar_appointment:
                     result['calendar.appointment'] = calendar_appointment.id
+                    #Change to stage Appointment Booked
+                    crm_stage_obj = request.env['crm.stage'].sudo().search([('name', '=', 'Appointment Booked')])
+                    lead_obj.write({
+                        'stage_id': crm_stage_obj.id,
+                    })
                     #Send Email to Installer
 
                     #Send Email
