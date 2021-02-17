@@ -187,6 +187,7 @@ class RhpApi(http.Controller):
 
         lead = post_data.get('lead')
         appointment = post_data.get('appointment')
+        
 
         if lead:
             #update res.partner
@@ -219,6 +220,14 @@ class RhpApi(http.Controller):
             if appointment:
                 appoinement_type = request.env['calendar.appointment.type'].sudo().search([], limit=1)
 
+                calendar_partner_ids = [res_partner_obj.id]
+                #find res.partner of hr.employee
+                for employee in appoinement_type.employee_ids:
+                    if employee.company_id.name == 'Unilux RHP':
+                        res_partner = request.env['res.partner'].sudo().search([('email', '=', employee.work_email)], limit=1)
+                        if res_partner:
+                            calendar_partner_ids.append(res_partner.id)
+
                 datetime_api = datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %H:%M:%S')
                 backend = pytz.timezone('UTC')
                 frontend = pytz.timezone(appoinement_type.appointment_tz)
@@ -230,14 +239,12 @@ class RhpApi(http.Controller):
 
                 google_start = start.strftime('%Y%m%dT%H%M%SZ')
                 google_end = end.strftime('%Y%m%dT%H%M%SZ')
-                print(google_start)
-                print(google_end)
 
                 calendar_appointment = request.env['calendar.event'].sudo().create({
                         'name': appointment.get('Name'),
                         'start': date_start,
                         'stop': date_end,
-                        'partner_ids': [(6, 0, [res_partner_obj.id])],
+                        'partner_ids': [(6, 0, calendar_partner_ids)],
                         'res_model': 'calendar.appointment.type',
                         'res_model_id': request.env['ir.model'].sudo().search([('model', '=', 'calendar.appointment.type')], limit=1).id,
                         
@@ -249,6 +256,13 @@ class RhpApi(http.Controller):
                 
                 if calendar_appointment:
                     result['calendar.appointment'] = calendar_appointment.id
+                    #Change to stage Appointment Booked
+                    crm_stage_obj = request.env['crm.stage'].sudo().search([('name', '=', 'Appointment Booked')])
+                    lead_obj.write({
+                        'stage_id': crm_stage_obj.id,
+                    })
+                    #Send Email to Installer
+
                     #Send Email
                     address = lead.get('Street') +  ' ' + lead.get('Street2') + ', ' + lead.get('City') + ', ' + lead.get('Zip') + ', ' + lead.get('Country')
                     template = request.env.ref('rhp_api.mail_template_appointment_create').sudo()
@@ -272,7 +286,7 @@ class RhpApi(http.Controller):
                     encoded_params = url_encode(params)
                     google_url = 'https://www.google.com/calendar/render?' + encoded_params
                     
-
+                    
                     email_values = {'date': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %H:%M:%S').strftime('%a %b %d, %Y'),
                                     'time': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %H:%M:%S').strftime('%I:%M %p'),
                                     'address': address,
@@ -306,6 +320,20 @@ class RhpApi(http.Controller):
                     #Link
                     
                     template.with_context(email_values).send_mail(calendar_appointment.id, force_send=True, email_values=None)
+
+
+                    template_installer = request.env.ref('rhp_api.mail_template_appointment_create_installer').sudo()
+                    template_installer.write({'email_from': 'toan@syncoria.com'})
+                    for employee in appoinement_type.employee_ids:
+                        if employee.company_id.name == 'Unilux RHP':
+                            template_installer.write({'email_to': employee.work_email})
+                            email_installer_values = {'date': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %H:%M:%S').strftime('%a %b %d, %Y'),
+                                                    'time': datetime.strptime(appointment.get('DateTime'), '%Y-%m-%d %H:%M:%S').strftime('%I:%M %p'),
+                                                    'address': address,
+                                                    'installer_name': employee.name,
+                                                    'phone': appointment.get('Phone'),
+                                                    }
+                            template_installer.with_context(email_installer_values).send_mail(calendar_appointment.id, force_send=True, email_values=None)  
                     #END Send Email
 
                     result['status'] = True

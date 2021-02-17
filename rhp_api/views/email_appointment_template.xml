@@ -290,5 +290,27 @@
             <field name="lang">${object.partner_id.lang}</field>
             <field name="auto_delete" eval="True"/>
         </record>
+
+    <record id="mail_template_appointment_create_installer" model="mail.template">
+            <field name="name">Online Appointment: Installer</field>
+            <field name="model_id" ref="calendar.model_calendar_event"/>
+            <field name="subject">RHP Appointment: An Appointment Is Confirmed</field>
+            <field name="email_from"></field>
+            <field name="email_to"></field>
+            <field name="body_html" type="html">
+              <div>
+              Hi ${ctx.get('installer_name')}, <br/> <br />
+              A new appointment is confirmed for: 
+              <p style="font-size: 15px;color:#000;font-family: Arial;font-weight: 700;">${ctx.get('date')} at
+                ${ctx.get('time')}.
+                <br />
+                ${ctx.get('address')}
+              </p>
+              Phone number: <a style="font-size: 15px;color:#000;font-family: Arial;font-weight: 700;" href="tel:${ctx.get('phone')}">${ctx.get('phone')}</a>
+              </div>
+            </field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
     
 </odoo>

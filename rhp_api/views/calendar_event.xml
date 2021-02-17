@@ -1,0 +1,41 @@
+<odoo>
+  <data>
+    <record id="view_calendar_event_form_inherit" model="ir.ui.view">
+        <field name="name">view.calendar.event.form.inherit</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//label[@for='partner_ids']" position="replace">
+                </xpath>
+                <xpath expr="//h2" position="replace">
+                    <group>
+                        <field name="partner_ids">
+                            <tree>
+                                <field name="name"/>
+                                <field name="street"/>
+                                <field name="street2"/>
+                                <field name="city"/>
+                                <field name="state_id"/>
+                                <field name="zip"/>
+                                <field name="country_id"/>
+                            </tree>
+                        </field>
+                        <field name="opportunity_id" options="{'no_create': True, 'no_edit': True}"/>
+                    </group>
+                </xpath>
+
+            </data>
+        </field>
+    </record>
+
+  </data>
+</odoo>
+
+
+
+
+
+
+
+                    
