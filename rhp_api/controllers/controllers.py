@@ -294,7 +294,7 @@ class RhpApi(http.Controller):
                                     'total': total,
                                     'google_url': google_url,
                                     }
-                    template.write({'email_from': 'toan@syncoria.com'})
+                    #template.write({'email_from': 'toan@syncoria.com'})
                     template.write({'email_to': appointment.get('Email')})
 
                     #Attachment
@@ -323,7 +323,7 @@ class RhpApi(http.Controller):
 
 
                     template_installer = request.env.ref('rhp_api.mail_template_appointment_create_installer').sudo()
-                    template_installer.write({'email_from': 'toan@syncoria.com'})
+                    #template_installer.write({'email_from': 'toan@syncoria.com'})
                     for employee in appoinement_type.employee_ids:
                         if employee.company_id.name == 'Unilux RHP':
                             template_installer.write({'email_to': employee.work_email})
