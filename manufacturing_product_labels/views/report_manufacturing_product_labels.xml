@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_large_labels" model="report.paperformat">
+        <field name="name">Product Labels - Large</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">112</field>
+        <field name="page_width">28</field> <!--85-->
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="paperformat_small_labels" model="report.paperformat">
+        <field name="name">Product Labels - Large</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">38</field>
+        <field name="page_width">28</field> <!--85-->
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+
+    <template id="report_manufacturing_product_labels">
+        <t t-call="web.html_container">
+
+            <div class="header"/>
+            <div class="article">
+                <t t-foreach="docs" t-as="o">
+                    <t t-lang="self.env.user.lang"/>
+                    <div class="label-container" t-attf-style="background-image:url('/manufacturing_product_labels/static/img/bg.jpg');width: 6in; height: 1.5in; background-size: contain; background-repeat: no-repeat;">
+                        <span t-attf-style="position: absolute;top: 46px; left: 97px; font-size: 10px; color: #333;" class="serial_num">000000A1</span>
+                        <span t-attf-style="position: absolute; left: 100px; top: 62px; font-size: 9px; color: #333;" class="date_of_build">2021-06-03</span>
+                        <span t-attf-style="position: absolute; top: 77px; left: 93px; font-size: 8px; color: #333;" class="prod_id"><span t-field="o.product_id"/></span>
+                        <img t-attf-style="position: absolute;left: 153px;top: 36px;" class="barcode" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' %('EAN13', 1234567890, 66, 28)" alt="barcode" />
+                    </div>
+
+                    
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_manufacturing_product_small_labels">
+        <t t-call="web.html_container">
+
+            <div class="header"/>
+            <div class="article">
+                <t t-foreach="docs" t-as="o">
+                    <t t-lang="self.env.user.lang"/>
+                    <div class="label-container" t-attf-style="background-image:url('/manufacturing_product_labels/static/img/bg.jpg');width: 6in; height: 1.5in; background-size: contain; background-repeat: no-repeat;">
+                        <span t-attf-style="position: absolute;top: 46px; left: 97px; font-size: 10px; color: #333;" class="serial_num">000000A1</span>
+                        <span t-attf-style="position: absolute; left: 100px; top: 62px; font-size: 9px; color: #333;" class="date_of_build">2021-06-03</span>
+                        <span t-attf-style="position: absolute; top: 77px; left: 93px; font-size: 8px; color: #333;" class="prod_id"><span t-field="o.product_id"/></span>
+                        <img t-attf-style="position: absolute;left: 153px;top: 36px;" class="barcode" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' %('EAN13', 1234567890, 66, 28)" alt="barcode" />
+                    </div>
+
+                    
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>
