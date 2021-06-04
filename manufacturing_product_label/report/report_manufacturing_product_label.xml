@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <report id="action_report_manufacturing_product_label"
+        string="Finished Product Label - Large"
+        model="mrp.production"
+        name="manufacturing_product_label.report_manufacturing_product_label"
+        file="manufacturing_product_label.report_manufacturing_product_label"
+        report_type="qweb-html"
+        paperformat="manufacturing_product_label.paperformat_large_label"
+        />
+
+    <report id="action_report_manufacturing_product_small_label"
+        string="Finished Product Label - Small"
+        model="mrp.production"
+        name="manufacturing_product_label.report_manufacturing_product_small_label"
+        file="manufacturing_product_label.report_manufacturing_product_small_label"
+        report_type="qweb-html"
+        paperformat="manufacturing_product_label.paperformat_small_label"
+        />
+
+</odoo>
