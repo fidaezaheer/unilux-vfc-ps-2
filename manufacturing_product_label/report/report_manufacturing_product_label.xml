@@ -8,6 +8,7 @@
         file="manufacturing_product_label.report_manufacturing_product_label"
         report_type="qweb-html"
         paperformat="manufacturing_product_label.paperformat_large_label"
+        menu="True" 
         />
 
     <report id="action_report_manufacturing_product_small_label"
@@ -17,6 +18,7 @@
         file="manufacturing_product_label.report_manufacturing_product_small_label"
         report_type="qweb-html"
         paperformat="manufacturing_product_label.paperformat_small_label"
+        menu="True" 
         />
 
 </odoo>
