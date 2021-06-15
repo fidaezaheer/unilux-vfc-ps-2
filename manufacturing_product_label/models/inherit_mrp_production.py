@@ -5,6 +5,6 @@ class LabelGenerator(models.Model):
 
     def mini_template_version(self, pname):
         rec = self.env['product.product'].search([('id','=',pname)])
-        if "assist rail" in rec.display_name.lower():
+        if "rotating assist device" in rec.display_name.lower():
             return True
         return False   
