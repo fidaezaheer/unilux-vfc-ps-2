@@ -43,12 +43,12 @@
                     <t t-set="x" t-value="o.lot_producing_id" />
 
                     <div class="label-container" t-attf-style="background-image:url('/manufacturing_product_label/static/img/bg.jpg');width: 6in; height: 1.5in; background-size: contain; background-repeat: no-repeat;">
-                        <span t-attf-style="position: relative;top: 37px; left: 84px; font-size: 8px; color: #333;" class="serial_num" t-field="o.lot_producing_id" />
-                        <span t-attf-style="position: relative; left: 30px; top: 52px; font-size: 8px; color: #333;" class="date_of_build">
+                        <span t-attf-style="position: relative;top: 37px; left: 84px; font-size: 8px; color: #231F20;" class="serial_num" t-field="o.lot_producing_id" />
+                        <span t-attf-style="position: relative; left: 30px; top: 52px; font-size: 8px; color: #231F20;" class="date_of_build">
                         <t t-esc='m_date.strftime("%Y-%m-%d")' />
                         </span>
-                        <span t-attf-style="position: relative; top: 67px; left: -22px; font-size: 8px; color: #333;" class="prod_id" t-field="o.product_id" />
-                        <img t-attf-style="position: relative;left: 0px;top: 30px; width: 180px;" class="barcode" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' %('Code128', o.lot_producing_id, 600, 100)"  alt="barcode" />
+                        <span t-attf-style="position: relative; top: 67px; left: -22px; font-size: 8px; color: #231F20;" class="prod_id" t-field="o.product_id" />
+                        <img t-attf-style="position: relative;left: 10px; top: 30px; width: 180px;" class="barcode" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' %('Code128', o.lot_producing_id, 600, 100)"  alt="barcode" />
                         <span t-attf-style="position: relative;top: 50px; left: -120px; font-size: 7px; color: #444; letter-spacing: 5px;" class="barcode-text" t-field="o.lot_producing_id" />
                     </div>   
                 </t>
@@ -65,16 +65,16 @@
                     <t t-lang="self.env.user.lang"/>
                     <t t-set="m_date" t-value="o.date_finished" />
 
-                    <t t-if="'Assist Rail' in o.product_id">
+                    <t t-if="o.mini_template_version(pname=o.product_id.id)">
                         <div class="label-container" t-attf-style="background:url('/manufacturing_product_label/static/img/label_bg_small_9003.jpg');width: 6in; height: 1.5in; background-size: contain; background-repeat: no-repeat;">
-                            <span t-attf-style="position: relative; left: 90px; top: 65px; font-size: 12px; color: #333;" class="date_of_build"><t t-esc='m_date.strftime("%Y-%m-%d")' /></span>
-                            <span t-attf-style="position: relative; top: 86px; left: -7px; font-size: 12px; color: #333;" class="prod_id"><span t-field="o.product_id"/></span>
+                            <span t-attf-style="position: relative; left: 90px; top: 65px; font-size: 12px; color: #231F20;" class="date_of_build"><t t-esc='m_date.strftime("%Y-%m-%d")' /></span>
+                            <span t-attf-style="position: relative; top: 86px; left: -7px; font-size: 12px; color: #231F20;" class="prod_id"><span t-field="o.product_id"/></span>
                         </div>
                     </t>
                     <t t-else="">
                         <div class="label-container" t-attf-style="background:url('/manufacturing_product_label/static/img/label_bg_small_9004.jpg');width: 6in; height: 1.5in; background-size: contain; background-repeat: no-repeat;">
-                            <span t-attf-style="position: relative; left: 90px; top: 65px; font-size: 12px; color: #333;" class="date_of_build"><t t-esc='m_date.strftime("%Y-%m-%d")' /></span>
-                            <span t-attf-style="position: relative; top: 86px; left: -7px; font-size: 12px; color: #333;" class="prod_id"><span t-field="o.product_id"/></span>
+                            <span t-attf-style="position: relative; left: 90px; top: 65px; font-size: 12px; color: #231F20;" class="date_of_build"><t t-esc='m_date.strftime("%Y-%m-%d")' /></span>
+                            <span t-attf-style="position: relative; top: 86px; left: -7px; font-size: 12px; color: #231F20;" class="prod_id"><span t-field="o.product_id"/></span>
                         </div>
                     </t>
                 </t>

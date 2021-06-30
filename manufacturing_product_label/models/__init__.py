@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-# from . import inherit_expense_bank_payments
+from . import inherit_mrp_production
